@@ -345,6 +345,12 @@ if __name__ == '__main__':
     # 传入省份和市获取天气信息
     province, city = config.province, config.city
     weather, max_temperature, min_temperature = get_weather(province, city)
+    if "雪" in weather or "雨" in weather:
+        notes = "记得带伞"
+    elif "霾" in weather:
+        notes = "记得戴口罩"
+    else:
+        notes = "祝你好运"
     isPost = False
     # 公众号推送消息
     if datetime.now().strftime('%H:%M:%S') < config.post_Time:
