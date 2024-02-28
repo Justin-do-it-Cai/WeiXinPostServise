@@ -145,12 +145,14 @@ def send_message(to_user, access_token, city_name, weather, max_temperature, min
         birth_date = year_date
         birth_day = str(birth_date.__sub__(today)).split(" ")[0]
     #增加问候语
-    if "雪" in weather or "雨" in weather:
+    if "雪" in weather or "雨" in weather or "雷" in weather:
         notes = "有雨雪天气，宝要记得带伞哦！"
     elif "霾" in weather:
         notes = "空气质量不好，宝要记得戴口罩！"
     else :
         notes = ":)"
+    if int(min_temperature) <= 3:
+        notes = notes + "今天最低温度比较低，也要记得穿暖和点~"
     theClass = get_Today_Class()
     theuser = to_user[0]
     data = {
