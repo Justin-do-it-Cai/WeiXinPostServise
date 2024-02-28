@@ -151,7 +151,7 @@ def send_message(to_user, access_token, city_name, weather, max_temperature, min
         notes = "空气质量不好，宝要记得戴口罩！"
     else :
         notes = ":)"
-    if int(min_temperature) <= 3:
+    if int(min_temperature[0]) <= 3:
         notes = notes + "今天最低温度比较低，也要记得穿暖和点~"
     theClass = get_Today_Class()
     theuser = to_user[0]
