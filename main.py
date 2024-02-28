@@ -176,7 +176,7 @@ def send_message(to_user, access_token, city_name, weather, max_temperature, min
                 "color": "#ED9121"
             },
             "notes":{
-                "value":notes,
+                "value": notes,
                 "color": "#87CEEB"
             },
             "min_temperature": {
@@ -357,7 +357,7 @@ if __name__ == '__main__':
     weather, max_temperature, min_temperature = get_weather(province, city)
     isPost = False
     # 公众号推送消息
-    if datetime.now().strftime('%H:%M:%S') < config.post_Time:
+    if datetime.now().strftime('%H:%M:%S') > config.post_Time:
         send_message(user, accessToken, city, weather, max_temperature, min_temperature)
         isPost = True
     # 课程提醒推送
