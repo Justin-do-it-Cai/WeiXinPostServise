@@ -152,7 +152,7 @@ def send_message(to_user, access_token, city_name, weather, max_temperature, min
     else :
         notes = ":)"
     if int(min_temperature[0]) <= 3:
-        notes = notes + "今天最低温度比较低，也要记得穿暖和点~"
+        notes2 = "今天最低温度比较低，也要记得穿暖和点~"
     theClass = get_Today_Class()
     theuser = to_user[0]
     data = {
@@ -179,6 +179,10 @@ def send_message(to_user, access_token, city_name, weather, max_temperature, min
             },
             "notes":{
                 "value": notes,
+                "color": "#87CEEB"
+            },
+            "notes2":{
+                "value": notes2,
                 "color": "#87CEEB"
             },
             "min_temperature": {
