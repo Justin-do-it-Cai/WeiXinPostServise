@@ -144,7 +144,13 @@ def send_message(to_user, access_token, city_name, weather, max_temperature, min
     else:
         birth_date = year_date
         birth_day = str(birth_date.__sub__(today)).split(" ")[0]
-
+    #增加问候语
+    if "雪" in weather or "雨" in weather:
+        notes = "记得带伞"
+    elif "霾" in weather:
+        notes = "记得戴口罩"
+    else:
+        notes = "祝你好运"
     theClass = get_Today_Class()
     theuser = to_user[0]
     data = {
@@ -168,6 +174,10 @@ def send_message(to_user, access_token, city_name, weather, max_temperature, min
             "weather": {
                 "value": weather,
                 "color": "#ED9121"
+            },
+            "notes":{
+                "value":notes,
+                "color": "#87CEEB"
             },
             "min_temperature": {
                 "value": min_temperature,
@@ -345,12 +355,6 @@ if __name__ == '__main__':
     # 传入省份和市获取天气信息
     province, city = config.province, config.city
     weather, max_temperature, min_temperature = get_weather(province, city)
-    if "雪" in weather or "雨" in weather:
-        notes = "记得带伞"
-    elif "霾" in weather:
-        notes = "记得戴口罩"
-    else:
-        notes = "祝你好运"
     isPost = False
     # 公众号推送消息
     if datetime.now().strftime('%H:%M:%S') < config.post_Time:
