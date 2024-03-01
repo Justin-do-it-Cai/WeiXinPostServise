@@ -123,27 +123,27 @@ def send_message(to_user, access_token, city_name, weather, max_temperature, min
     week = week_list[today.weekday()]
     # 开学的第几周
     weeks = get_Today_Week()
-    # 获取在一起的日子的日期格式
-    love_year = int(config.love_date.split("-")[0])
-    love_month = int(config.love_date.split("-")[1])
-    love_day = int(config.love_date.split("-")[2])
-    love_date = date(love_year, love_month, love_day)
-    # 获取在一起的日期差
-    love_days = str(today.__sub__(love_date)).split(" ")[0]
-    # 获取生日的月和日
-    birthday_month = int(config.birthday.split("-")[1])
-    birthday_day = int(config.birthday.split("-")[2])
-    # 今年生日
-    year_date = date(year, birthday_month, birthday_day)
-    # 计算生日年份，如果还没过，按当年减，如果过了需要+1
-    if today > year_date:
-        birth_date = date((year + 1), birthday_month, birthday_day)
-        birth_day = str(birth_date.__sub__(today)).split(" ")[0]
-    elif today == year_date:
-        birth_day = 0
-    else:
-        birth_date = year_date
-        birth_day = str(birth_date.__sub__(today)).split(" ")[0]
+    # # 获取在一起的日子的日期格式
+    # love_year = int(config.love_date.split("-")[0])
+    # love_month = int(config.love_date.split("-")[1])
+    # love_day = int(config.love_date.split("-")[2])
+    # love_date = date(love_year, love_month, love_day)
+    # # 获取在一起的日期差
+    # love_days = str(today.__sub__(love_date)).split(" ")[0]
+    # # 获取生日的月和日
+    # birthday_month = int(config.birthday.split("-")[1])
+    # birthday_day = int(config.birthday.split("-")[2])
+    # # 今年生日
+    # year_date = date(year, birthday_month, birthday_day)
+    # # 计算生日年份，如果还没过，按当年减，如果过了需要+1
+    # if today > year_date:
+    #     birth_date = date((year + 1), birthday_month, birthday_day)
+    #     birth_day = str(birth_date.__sub__(today)).split(" ")[0]
+    # elif today == year_date:
+    #     birth_day = 0
+    # else:
+    #     birth_date = year_date
+    #     birth_day = str(birth_date.__sub__(today)).split(" ")[0]
     #增加问候语
     if "雪" in weather or "雨" in weather or "雷" in weather:
         notes = "有雨雪天气，宝要记得带伞哦！"
@@ -151,8 +151,10 @@ def send_message(to_user, access_token, city_name, weather, max_temperature, min
         notes = "空气质量不好，宝要记得戴口罩！"
     else :
         notes = ":)"
-    if int(min_temperature[0]) <= 3:
+    if int(min_temperature[:-1]) <= 3:
         notes2 = "今天最低温度比较低，也要记得穿暖和点~"
+    else :
+        notes2 = "ღ( ´･ᴗ･` )"
     theClass = get_Today_Class()
     theuser = to_user[0]
     data = {
@@ -193,14 +195,14 @@ def send_message(to_user, access_token, city_name, weather, max_temperature, min
                 "value": max_temperature,
                 "color": "#FF6100"
             },
-            "love_day": {
-                "value": love_days,
-                "color": "#87CEEB"
-            },
-            "birthday": {
-                "value": birth_day,
-                "color": "#FF8000"
-            },
+            # "love_day": {
+            #     "value": love_days,
+            #     "color": "#87CEEB"
+            # },
+            # "birthday": {
+            #     "value": birth_day,
+            #     "color": "#FF8000"
+            # },
             "firstClass": {
                 "value": theClass[0],
                 "color": "#FF8000"
