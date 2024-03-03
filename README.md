@@ -1,27 +1,28 @@
 # 前言：
-最近发现dy很火的一个小项目，刚好想学习一下微信公众号推送相关知识。基于别人的项目（只有天气推送，原作者忘了抱歉！），**增加了一些自己的需求：1、每日推送天气的时候顺便推送当天的课程； 2、如果下一节有课，在上课前推送提醒； 3、每日晚安心语及第二天课程推送。**
+原作者仓库：ghwmx/WeiXinPost
+尝试原因：有笨蛋容易忘带伞，遂每日微信骚扰提醒，后续功能待开发。
+不过项目（也有一部分测试号的原因）上限比较低 
 # 实现原理：
-最开始只有每天的天气推送（每天只需要定时推送一次就好），实现很简单，利用GitHub Actions创建一个定时的工作流就行。
-增加需求后，最开始的想法不变，利用GitHub Actions创建工作流多跑项目，让程序一直执行，直到“晚安心语”推送完后就结束。但是有个**GitHub Actions有两个致命的限制**：1、一个月能够执行项目的总时常为2000分钟，程序一直执行很快就会花光时间！  2、假如你设置的每日推送时间是  7:40  , 由于GitHub Actions是排队执行，如果是高峰期会导致项目延迟执行（一般延迟20-40分钟），所以第二点直接否定了我们想要准时的需求。
+每日天气推送（每天只需要定时推送一次就好），实现很简单，利用GitHub Actions创建一个定时的工作流就行。但由于git工作流顺序执行，高峰期不够准时。
 **值得注意的是，如果我们手动触发GitHub Actions里面的工作流，则是实时执行（本项目部署时间一般是50s左右）。所以，问题转变，通过用腾讯云函数的定时功能来触发GitHub Actions里面的工作流文件，达到曲线救国！**
-利用腾讯云函数定时触发的功能，只需要在程序设置的每日提醒、每节课上课提醒、每日晚安提醒时间的前两分钟触发Actions里面的工作流文件就能**完美解决GitHub Actions时间限制，和定时延迟的弊端。**
+利用腾讯云函数定时触发的功能，只需要在程序设置的每日提醒、每节课上课提醒、每日晚安提醒时间的前两分钟触发Actions里面的工作流文件就能**完美解决GitHub Actions时间限制，和定时延迟的弊端。**、
+注：不知道是什么问题，腾讯云的触发器总会出发三次（所以暂时未开启）
 # 一、准备条件：
 ## 1、GitHub账号，注册地址[（https://github.com/）](https://github.com/)
 ## 2、微信公众平台账号，注册地址[（https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login）](https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login)
 ## 3、腾讯云函数账号，注册地址[（https://cloud.tencent.com/）](https://cloud.tencent.com/)
-## 4、天行数据账号（用于获取晚安心语内容），注册地址[（https://www.tianapi.com/）](https://www.tianapi.com/)
 # 二、实现效果图
 ## 1、每日提醒
 ![每日提醒](https://img-blog.csdnimg.cn/7f2df556857842dca595013519408b5a.png)
 
 ## 2、上课提醒
 ![上课提醒](https://img-blog.csdnimg.cn/3b3023e6648847b4806d5ff38fc1c3ee.png)
-## 3、晚安心语及第二天课程提醒
-![晚安心语](https://img-blog.csdnimg.cn/d0e681648887499da7d3330e04cb31ad.png)
+
 # 三、步骤
 ## 1、拉取GitHub项目
 将仓库里面的项目fork到自己仓库
-GitHub项目地址：[https://github.com/ghwmx/WeiXinPost](https://github.com/ghwmx/WeiXinPost)
+GitHub原项目地址：[https://github.com/ghwmx/WeiXinPost](https://github.com/ghwmx/WeiXinPost)
+拉我的也行：[https://github.com/Justin-do-it-Cai/WeiXinPostServise](https://github.com/Justin-do-it-Cai/WeiXinPostServise)
 ## 2、更改项目中的配置文件：config.py
 ![更改配置文件](https://img-blog.csdnimg.cn/77dadb34a9544377a05539848eedc106.png)
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/899f69fdb93d45019b599f55a81a6370.png)
@@ -47,14 +48,14 @@ GitHub项目地址：[https://github.com/ghwmx/WeiXinPost](https://github.com/gh
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/7372c9acbd8f4d15a5787d0fc673daf6.png)
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/7f85a50908914ec8803b2fbaf4b71215.png)
 ### ⑤复制模板ID，填到config.py的  template_id1
-### ⑥后面的上课提醒模板 和  晚安心语模板同理
+### ⑥其它模板同理
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/f48204ff813740e09b4cdb52a437a773.png)
 ### ⑦扫描测试二维码，关注公众号，关注后复制微信号，填入config.py中的user
 **注意：需要填写到双引号里面**
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/e6386e37d2e549e3a5074c55a2d2452a.png)
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/6fa2e969a8694103915045f27ff5e800.png)
 ### ⑧保存修改
-![在这里插入图片描述](https://img-blog.csdnimg.cn/6d408d75eb2f4a04aa2f0b044e8d982d.png)
+不会有人不会commit吧（x）
 
 **至此，微信公众平台配置完成！**
 ## 4、配置GitHub Actions
@@ -76,7 +77,7 @@ GitHub项目地址：[https://github.com/ghwmx/WeiXinPost](https://github.com/gh
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/a3bacc4779724a34816d2dcbfbeb8a6f.png)
 *若运行失败，点击进去，查看运行过程中产生的错误
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/def49ade63ef48e98e8f6b2b638f42fe.png)
-*定位问题出现的原因，是环境配置不正确，还是程序本身的问题。以下问题是程序 main.py 第79行的函数：get_Today_Class运行时发生错误。原因：没有配置开学时间
+*定位问题出现的原因，是环境配置不正确，还是程序本身的问题。以下问题是程序 main.py 第79行的函数：get_Today_Class运行时发生错误。原因：没有配置开学时间（请读代码x）
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/6cdeeeed62974a17916a2da5cf60c039.png)
 
 ### ③获取GitHub Token为后续腾讯云函数配置做准备
@@ -149,6 +150,5 @@ GitHub项目地址：[https://github.com/ghwmx/WeiXinPost](https://github.com/gh
 **恭喜，你已经成功完成所有配置！**
 
 # 结束语
-   这篇文章因为自己的原因写了很久，到现在写完已经并不是热门话题了哈哈哈哈。2022年暑假的时候在家折腾服务器，恰好看到了某音上给女朋友推送天气，啊啊啊啊，想着虽然没有女朋友，但是我是不是可以从别人的项目里面改一改，写一些自己的需求，学习一下推送的方法，诶！挂到自己的小NAS上岂不美滋滋。当我尝试把写好的程序挂到NAS上时发现小小NAS的性能是在太弱了！
-
-因为好朋友需要完成相关Python实验项目，所以又重新熟悉一遍，干脆就趁此机会把它圆满吧。教程应该还是比较详细，我尽可能每一步都截图。希望能够对大家有有些小帮助！感谢！
+   感谢原作者模板
+   希望改的内容不要被用户嫌弃。。。

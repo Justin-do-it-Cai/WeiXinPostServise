@@ -147,12 +147,24 @@ def send_message(to_user, access_token, city_name, weather, max_temperature, min
     #增加问候语
     if "雪" in weather or "雨" in weather or "雷" in weather:
         notes = "有雨雪天气，宝要记得带伞哦！"
+    elif "雾" in weather or "尘" in weather:
+        notes = "看不太清路呢，宝谨慎出行……"
     elif "霾" in weather:
         notes = "空气质量不好，宝要记得戴口罩！"
+    elif "阴" in weather:
+        notes = "向日葵是不行了，今天得用阳光菇（x"
+    elif "云" in weather:
+        notes = "欢迎来到云难"
+    elif "晴" in weather:
+        notes = "🌻🌻🌻"
     else :
-        notes = "：）祝你开心！"
-    if int(min_temperature[:-1]) <= 3:
+        notes = "WARNING:什么怎么还有我没考虑到的天气，请私聊客服debug"
+    if int(max_temperature[:-1]) - int(min_temperature[:-1]) >= 10:
+        notes2 = "昼夜温差好大，注意及时增减衣物，要不然……会变甜！"
+    elif int(min_temperature[:-1]) <= 3:
         notes2 = "今天最低温度比较低，也要记得穿暖和点~"
+    elif int(max_temperature[:-1]) >= 30:
+        notes2 = "热……要热成小狗了！"
     else :
         notes2 = "  ღ( ´･ᴗ･` )"
     theClass = get_Today_Class()
