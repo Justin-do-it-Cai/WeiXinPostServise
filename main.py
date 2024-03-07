@@ -245,11 +245,10 @@ if __name__ == '__main__':
     weather, max_temperature, min_temperature = get_weather(province, city)
     isPost = False
     # 接收的用户
-    for user in config.user :
-        user = config.user
-        print('user:', user)
+    for u in config.user :
+        print('user:', u)
         # 公众号推送消息
         if datetime.now().strftime('%H:%M:%S') < config.post_Time:
-            send_message(user, accessToken, city, weather, max_temperature, min_temperature)
+            send_message(u, accessToken, city, weather, max_temperature, min_temperature)
             isPost = True
     
