@@ -114,9 +114,10 @@ def send_message(to_user, access_token, city_name, weather, max_temperature, min
     elif "晴" in weather:
         notes = "🌻🌻🌻"
     else :
-        notes = "WARNING:什么怎么还有我没考虑到的天气，请私聊客服debug"
+        notes = "什么怎么还有我没考虑到的天气，请私聊客服debug"
+    
     if int(max_temperature[:-1]) - int(min_temperature[:-1]) >= 10:
-        notes2 = "昼夜温差好大，注意及时增减衣物，要不然……会变甜！"
+        notes2 = "昼夜温差好大，要及时增减衣物，否则会变甜！"
     elif int(min_temperature[:-1]) <= 3:
         notes2 = "今天最低温度比较低，也要记得穿暖和点~"
     elif int(max_temperature[:-1]) >= 30:
