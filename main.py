@@ -237,15 +237,15 @@ def calculate_Time_Difference(t1, t2):
 
 
 if __name__ == '__main__':
-    # 获取accessToken
-    accessToken = get_access_token()
-    print('token', accessToken)
     # 传入省份和市获取天气信息
     province, city = config.province, config.city
     weather, max_temperature, min_temperature = get_weather(province, city)
     isPost = False
     # 接收的用户
     for u in config.user :
+        # 获取accessToken
+        accessToken = get_access_token()
+        print('token', accessToken)
         print('user:', u)
         # 公众号推送消息
         if datetime.now().strftime('%H:%M:%S') < config.post_Time:
